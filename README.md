@@ -1,2 +1,4 @@
 # deeplearning-notes
-Deeplearning.ai notes.
+
+[deeplearning.ai](https://www.deeplearning.ai/)
+
