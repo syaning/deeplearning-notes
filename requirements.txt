@@ -3,3 +3,7 @@ h5py
 matplotlib
 Pillow
 scipy
+tensorflow
+keras
+colorsys
+imghdr
