@@ -1,3 +1,4 @@
+from PIL import Image
 import tensorflow as tf
 from keras import backend as K
 from keras.models import load_model
@@ -157,20 +158,22 @@ def yolo_eval(yolo_outputs, image_shape=(720., 1280.), max_boxes=10, score_thres
 
 
 if __name__ == '__main__':
+    sess = K.get_session()
+
     class_names = read_classes('model_data/coco_classes.txt')
     anchors = read_anchors('model_data/yolo_anchors.txt')
-    image_shape = (720., 1280.)
 
     yolo_model = load_model('model_data/yolo.h5')
     yolo_model.summary()
 
-    yolo_outputs = yolo_head(yolo_model.output, anchors, len(class_names))
-    scores, boxes, classes = yolo_eval(yolo_outputs, image_shape)
-
-    sess = K.get_session()
-    image_file = 'test.jpg'
+    image_file = 'giraffe.jpg'
+    w, h = Image.open('images/' + image_file).size
+    image_shape = (float(h), float(w))
     image, image_data = preprocess_image('images/' + image_file,
                                          model_image_size=(608, 608))
+
+    yolo_outputs = yolo_head(yolo_model.output, anchors, len(class_names))
+    scores, boxes, classes = yolo_eval(yolo_outputs, image_shape)
 
     out_scores, out_boxes, out_classes = sess.run([scores, boxes, classes],
                                                   feed_dict={yolo_model.input: image_data, K.learning_phase(): 0})
