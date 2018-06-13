@@ -11,3 +11,4 @@ emoji
 Faker
 tqdm
 Babel
+pydub
